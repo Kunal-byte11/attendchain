@@ -1,0 +1,12 @@
+node_modules/
+.next/
+blockchain/artifacts/
+blockchain/cache/
+blockchain/typechain-types/
+coverage/
+playwright-report/
+test-results/
+package-lock.json
+docs/
+CLAUDE.md
+AGENTS.md
