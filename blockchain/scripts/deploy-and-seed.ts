@@ -20,30 +20,38 @@ async function main() {
   const qrSigner = admin; // In local dev, admin serves as default QR signer
 
   const Factory = await ethers.getContractFactory("AttendChainRegistry");
-  const registry = (await Factory.deploy(admin.address, qrSigner.address)) as any;
+  const registry = (await Factory.deploy(
+    admin.address,
+    qrSigner.address
+  )) as any;
   await registry.waitForDeployment();
 
   const registryAddress = await registry.getAddress();
   console.log(`AttendChainRegistry deployed to: ${registryAddress}`);
 
   // 1. Grant TEACHER_ROLE to teacher account
-  const grantTx = await (registry.connect(admin) as any)
-    .grantTeacherRole(teacher.address);
+  const grantTx = await (registry.connect(admin) as any).grantTeacherRole(
+    teacher.address
+  );
   await grantTx.wait();
   console.log(`Granted TEACHER_ROLE to ${teacher.address}`);
 
   // 2. Seed synthetic courses: CS701 (Distributed Systems) and CS702 (Blockchain Engineering)
   const courseCode1 = "CS701";
   const courseIdHash1 = ethers.id(courseCode1);
-  const courseTx1 = await (registry.connect(admin) as any)
-    .createCourse(courseIdHash1, teacher.address);
+  const courseTx1 = await (registry.connect(admin) as any).createCourse(
+    courseIdHash1,
+    teacher.address
+  );
   await courseTx1.wait();
   console.log(`Created course ${courseCode1} (Hash: ${courseIdHash1})`);
 
   const courseCode2 = "CS702";
   const courseIdHash2 = ethers.id(courseCode2);
-  const courseTx2 = await (registry.connect(admin) as any)
-    .createCourse(courseIdHash2, teacher.address);
+  const courseTx2 = await (registry.connect(admin) as any).createCourse(
+    courseIdHash2,
+    teacher.address
+  );
   await courseTx2.wait();
   console.log(`Created course ${courseCode2} (Hash: ${courseIdHash2})`);
 
@@ -60,8 +68,10 @@ async function main() {
     ethers.solidityPackedKeccak256(["bytes32", "string"], [salt, roll])
   );
 
-  const enrollTx = await (registry.connect(admin) as any)
-    .enrollStudentsBatch(courseIdHash1, studentHashes);
+  const enrollTx = await (registry.connect(admin) as any).enrollStudentsBatch(
+    courseIdHash1,
+    studentHashes
+  );
   await enrollTx.wait();
   console.log(
     `Enrolled ${studentHashes.length} synthetic students in ${courseCode1}`
