@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import hre from "hardhat";
+import "@nomicfoundation/hardhat-toolbox";
 import { resetMemoryDb, getMemoryDb } from "@/lib/db/client";
 import { syncBlockchainEvents } from "@/lib/blockchain/sync";
 import { POST as syncHandler } from "@/app/api/sync/route";
